@@ -74,6 +74,28 @@ services:
       - default
     restart: always
 
+  neo4j-minimal:
+    image: neo4j:latest
+    container_name: imdb_neo4j_minimal
+    ports: 
+      - "7474:7474"
+      - "7687:7687"
+    volumes: 
+      - $HOME/data:/data
+      - $HOME/neo4j/logs:/logs
+      - $HOME/neo4j/import:/var/lib/neo4j/import
+      - $HOME/plugins:/plugins
+    environment:
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_apoc_import_file_use__neo4j__config=true
+      - NEO4JLABS_PLUGINS=\[\"apoc\"\]
+      # - NEO4J_AUTH=neo4j/imdb
+      - NEO4J_AUTH=none
+    networks:
+      - default
+    restart: always
+
   neo4j-init:
     build: ./neo4j-init
     container_name: neo4j_init

@@ -11,7 +11,7 @@ package object imdb {
 
   def getVMParam(vmParam: String): String = {
     val r = sp(vmParam)
-    if (r != null && !r.trim.isEmpty) r.trim else throw new RuntimeException(s"-D$vmParam was not provided.")
+    if (r != null && r.trim.nonEmpty) r.trim else throw new RuntimeException(s"-D$vmParam was not provided.")
   }
 
   private lazy val confDir = getVMParam("postgres_neo4j_etl.conf")
@@ -22,6 +22,8 @@ package object imdb {
   final lazy val neo4jInterface: String = neo4j.getString("serverName")
   final lazy val neo4jPort: String = neo4j.getString("portNumber")
   final lazy val neo4jUri: String = s"bolt://$neo4jInterface:$neo4jPort"
+
+  final lazy val etlMinimal: Boolean = getVMParam("postgres_neo4j_etl.minimal").toBoolean
 
   final lazy val logMsg = s"%s: %s nodes created. Cypher query = %s"
 }

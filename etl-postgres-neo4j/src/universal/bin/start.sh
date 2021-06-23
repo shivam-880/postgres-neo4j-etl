@@ -14,6 +14,7 @@ java -server -cp "${LIB_DIR}/*:${CONF_DIR}/*" \
   -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
   -Dpostgres_neo4j_etl.home="${HOME_DIR}" \
   -Dpostgres_neo4j_etl.conf="${CONF_DIR}" \
+  -Dpostgres_neo4j_etl.minimal="${ETL_MINIMAL}" \
   -Dlogback.configurationFile="${CONF_DIR}/logback.xml" \
    com.iamsmkr.imdb.PostgresNeo4jEtl 2>&1
 

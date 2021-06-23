@@ -1,10 +1,12 @@
 package com.iamsmkr.imdb.persistence.read.repositories.consolidatedcrew
 
+import com.iamsmkr.imdb.etlMinimal
 import com.iamsmkr.imdb.persistence.Entities._
 import slick.jdbc.PostgresProfile.api._
 import com.iamsmkr.imdb.persistence.read.repositories.ColumnTypeImplicits._
+import com.iamsmkr.imdb.persistence.read.repositories.consolidatedcrew.ConsolidatedCrewTableDef.tblName
 
-class ConsolidatedCrewTableDef(tag: Tag) extends Table[ConsolidatedCrewEntity](tag, "consolidated_crew") {
+class ConsolidatedCrewTableDef(tag: Tag) extends Table[ConsolidatedCrewEntity](tag, tblName) {
 
   def movieId = column[String]("movieid")
 
@@ -21,5 +23,6 @@ class ConsolidatedCrewTableDef(tag: Tag) extends Table[ConsolidatedCrewEntity](t
 }
 
 object ConsolidatedCrewTableDef {
+  private final lazy val tblName = if (etlMinimal) "consolidated_crew_minimal" else "consolidated_crew"
   lazy val consolidatedCrews = TableQuery[ConsolidatedCrewTableDef]
 }

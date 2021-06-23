@@ -1,10 +1,12 @@
 package com.iamsmkr.imdb.persistence.read.repositories.people
 
+import com.iamsmkr.imdb.etlMinimal
 import com.iamsmkr.imdb.persistence.Entities.PersonEntity
 import slick.jdbc.PostgresProfile.api._
 import com.iamsmkr.imdb.persistence.read.repositories.ColumnTypeImplicits._
+import com.iamsmkr.imdb.persistence.read.repositories.people.PeopleTableDef.tblName
 
-class PeopleTableDef(tag: Tag) extends Table[PersonEntity](tag, "people") {
+class PeopleTableDef(tag: Tag) extends Table[PersonEntity](tag, tblName) {
 
   def personId = column[String]("personid")
 
@@ -20,5 +22,6 @@ class PeopleTableDef(tag: Tag) extends Table[PersonEntity](tag, "people") {
 }
 
 object PeopleTableDef {
+  private final lazy val tblName = if (etlMinimal) "people_minimal" else "people"
   lazy val people = TableQuery[PeopleTableDef]
 }
