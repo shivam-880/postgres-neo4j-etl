@@ -35,9 +35,9 @@ services:
       - ./postgres-init/initialize-imdb.sh:/initialize-imdb.sh
       - ./postgres-init/data-cleanup.sh:/data-cleanup.sh
       - ./postgres-init/rid-missing.sc:/rid-missing.sc
-      - ./postgres-init/schema.sql:/schema.sql
-      - ./postgres-init/denormalized-schema.sql:/denormalized-schema.sql
-      - ./postgres-init/minimal-schema.sql:/minimal-schema.sql
+      - ./postgres-init/schemas/schema.sql:/schema.sql
+      - ./postgres-init/schemas/denormalized-schema.sql:/denormalized-schema.sql
+      - ./postgres-init/schemas/minimal-schema.sql:/minimal-schema.sql
     command: bash -c "sleep 10 && /initialize-imdb.sh"
 
   pgadmin:
