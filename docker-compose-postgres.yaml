@@ -1,0 +1,53 @@
+version: '2.1'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: imdb_postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=imdb
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: none
+    restart: always
+
+  postgres-init:
+    image: postgres:13
+    container_name: imdb_postgres_init
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - PGPASSWORD=postgres
+      - MINIMAL_DATASET_SIZE=100
+      - RELOAD_DATASET=true
+    volumes:
+      - ./postgres-init/initialize-imdb.sh:/initialize-imdb.sh
+      - ./postgres-init/data-cleanup.sh:/data-cleanup.sh
+      - ./postgres-init/rid-missing.sc:/rid-missing.sc
+      - ./postgres-init/schema.sql:/schema.sql
+      - ./postgres-init/denormalized-schema.sql:/denormalized-schema.sql
+      - ./postgres-init/minimal-schema.sql:/minimal-schema.sql
+    command: bash -c "sleep 10 && /initialize-imdb.sh"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: imdb_pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    logging:
+      driver: none

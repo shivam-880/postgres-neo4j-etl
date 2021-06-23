@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="30 seconds">
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger %m%n%rEx</pattern>
+        </layout>
+    </appender>
+
+    <logger name="com.iamsmkr" level="info">
+        <appender-ref ref="stdout"/>
+    </logger>
+
+    <root level="error">
+        <appender-ref ref="stdout"/>
+    </root>
+</configuration>

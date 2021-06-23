@@ -1,0 +1,61 @@
+type Year {
+    year: Int!
+    movies: [Movie] @relationship(type: "RELEASED_IN", direction: IN)
+    peopleBorn: [Person] @relationship(type: "BORN_IN", direction: IN)
+    peopleDied: [Person] @relationship(type: "DIED_IN", direction: IN)
+}
+
+type Genre {
+    type: String!
+    movies: [Movie] @relationship(type: "IN_GENRE", direction: IN)
+}
+
+type Movie {
+    movieId: ID! 
+    title: String!
+    runtime: Int
+    adult: Boolean!
+    avgRating: Float
+    numVotes: Int
+    genres: [Genre] @relationship(type: "IN_GENRE", direction: OUT)
+    releasedInYear: [Year] @relationship(type: "RELEASED_IN", direction: OUT)
+    selves: [Person] @relationship(type: "SELF_IN", direction: IN)
+    directors: [Person] @relationship(type: "DIRECTOR_IN", direction: IN)
+    writers: [Person] @relationship(type: "WRITER_IN", direction: IN)
+    actors: [Person] @relationship(type: "ACTOR_IN", direction: IN)
+    actress: [Person] @relationship(type: "ACTRESS_IN", direction: IN)
+    composers: [Person] @relationship(type: "COMPOSER_IN", direction: IN)
+    productionDesigners: [Person] @relationship(type: "PRODUCTION_DESIGNER", direction: IN)
+    editors: [Person] @relationship(type: "EDITOR_IN", direction: IN)
+    cinematographers: [Person] @relationship(type: "CINEMATOGRAPHER_IN", direction: IN)
+    archiveFootages: [Person] @relationship(type: "ARCHIVE_FOOTAGE_IN", direction: IN)
+    archiveSounds: [Person] @relationship(type: "ARCHIVE_SOUND_IN", direction: IN)
+}
+
+type Person {
+    personId: ID!
+    name: String!
+    professions: [String!]!
+    bornInYear: Year @relationship(type: "BORN_IN", direction: OUT)
+    diedInYear: Year @relationship(type: "DIED_IN", direction: OUT)
+    selfInMovies: [Movie] @relationship(type: "SELF_IN", direction: OUT)
+    directorInMovies: [Movie] @relationship(type: "DIRECTOR_IN", direction: OUT)
+    writerInMovies: [Movie] @relationship(type: "WRITER_IN", direction: OUT)
+    actorInMovies: [Movie] @relationship(type: "ACTOR_IN", direction: OUT)
+    actressInMovies: [Movie] @relationship(type: "ACTRESS_IN", direction: OUT)
+    composerInMovies: [Movie] @relationship(type: "COMPOSER_IN", direction: OUT)
+    productionDesignerInMovies: [Movie] @relationship(type: "PRODUCTION_DESIGNER", direction: OUT)
+    editorInMovies: [Movie] @relationship(type: "EDITOR_IN", direction: OUT)
+    cinematographerInMovies: [Movie] @relationship(type: "CINEMATOGRAPHER_IN", direction: OUT)
+    archiveFootageInMovies: [Movie] @relationship(type: "ARCHIVE_FOOTAGE_IN", direction: OUT)
+    archiveSoundInMovies: [Movie] @relationship(type: "ARCHIVE_SOUND_IN", direction: OUT)
+}
+
+extend type Person {
+    knownfor: [Movie] @cypher(statement: """MATCH (this)-[*]->(m:Movie) RETURN m""")
+    sixDegreeOfSeparation(personName: String = "Kevin Bacon"): Int @cypher(statement: """
+            MATCH path = shortestPath(
+                (this)-[*]-(p:Person {name: personName})
+            ) RETURN length(path)
+    """)
+}
