@@ -14,7 +14,7 @@ Head to [WIKI](https://github.com/iamsmkr/postgres-neo4j-etl/wiki) for documenta
   $ docker-compose up postgres pgadmin neo4j graphql 
   ```
 
-- ETL container service needs to be started separately
+- ETL container service needs to be started separately. Note that ETL must be started only after postgres is initialized completely.
   ```
   $ cd etl-postgres-neo4j
   $ sbt docker:publishLocal
