@@ -3,7 +3,7 @@
 Head to [WIKI](https://github.com/iamsmkr/postgres-neo4j-etl/wiki) for documentations.
 
 ## Deploy
-- To start containers for the first time we could use the following commands:
+- To start containers for the first time we could use the following command:
   ```sh
   $ docker-compose up
   ```
