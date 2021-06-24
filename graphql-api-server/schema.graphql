@@ -52,7 +52,7 @@ type Person {
 }
 
 extend type Person {
-    knownfor: [Movie] @cypher(statement: """MATCH (this)-[*]->(m:Movie) RETURN m""")
+    knownfor: [Movie] @cypher(statement: """MATCH (this)-[r]->(m:Movie) RETURN m""")
     sixDegreeOfSeparation(personName: String = "Kevin Bacon"): Int @cypher(statement: """
             MATCH path = shortestPath(
                 (this)-[*]-(p:Person {name: personName})
