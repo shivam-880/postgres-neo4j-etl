@@ -10,12 +10,12 @@ Head to [WIKI](https://github.com/iamsmkr/postgres-neo4j-etl/wiki) for documenta
   This will start all the containers and initialise postgres and neo4j.
   
   **Note:** To avoid reinitializing databases, we can restart the service by specifying relevant services with the docker-compose command. No need to start ETL container if data already etl'd to neo4j.
-  ```
+  ```sh
   $ docker-compose up postgres pgadmin neo4j graphql 
   ```
 
 - ETL container service needs to be started separately. Note that ETL must be started only after postgres is initialized completely.
-  ```
+  ```sh
   $ cd etl-postgres-neo4j
   $ sbt docker:publishLocal
   $ docker run --net="host" --env ETL_MINIMAL=true --name=imdb_etl etl-postgres-neo4j:0.1
